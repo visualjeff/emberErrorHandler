@@ -6,6 +6,9 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('systemDown');
+  this.route('accessDenied');
+  this.route('pageNotFound');
 });
 
 export default Router;
