@@ -1,5 +1,5 @@
 <select name={{name}} class={{className}}>
     {{#each choices key="choice" as |option|}}
-        <option value={{option.choice}}>{{option.choice}}</option>
+        <option value={{option.choice}}>{{option.choice}} {{option.description}}</option>
     {{/each}}
 </select>

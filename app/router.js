@@ -9,6 +9,7 @@ Router.map(function() {
   this.route('systemDown');
   this.route('accessDenied');
   this.route('pageNotFound');
+  this.route('notImplemented');
 });
 
 export default Router;

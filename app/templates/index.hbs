@@ -1,13 +1,13 @@
 {{#form-control model=model action="setErrorCode"}}
-	{{#label-control for="errorCode"}}Select an HTTP error: 
+	{{#label-control for="errorCode"}}Select an HTTP response or error code: 
 	{{select-field model=model choices=model.selectErrorCode.choices name=model.selectErrorCode.name className=model.selectErrorCode.className required="true"}}
     	<small class="error">errorCode is required</small>
         {{/label-control}}
 
-	{{#label-control for="httpCallType"}}Select an HTTP call: 
+	{{#label-control for="httpCallType"}}Select a type of HTTP call:
 	{{select-field model=model choices=model.selectHttpCallType.choices name=model.selectHttpCallType.name className=model.selectHttpCallType.className required="true"}}
     	<small class="error">httpCallType is required</small>
         {{/label-control}} 
 {{/form-control}}
 <br>
-<a href="" {{action "exerciseErrorCode"}} class=button>Exercise error code</a>
+<a href="" {{action "exerciseErrorCode"}} class=button>Exercise Selections</a>

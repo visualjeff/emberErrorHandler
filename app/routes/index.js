@@ -1,22 +1,36 @@
 import Ember from 'ember';
-import ENV from 'errproject/config/environment';
-import httpErrorHandlerMixin from '../mixins/http-error-handler'
 
-export default Ember.Route.extend(httpErrorHandlerMixin, {
+export default Ember.Route.extend({
     model: function() {
         return {
             selectErrorCode: {
                 name: 'ErrorCode',
                 className: 'dropdown',
-                choices: [{
-                    choice: '302'
-                }, {
-                    choice: '401'
-                }, {
-                    choice: '404'
-                }, {
-                    choice: '500'
-                }]
+                choices: [{ choice: '400', description: 'Bad Request'}, 
+                          { choice: '401', description: 'Unauthorized'}, 
+                          { choice: '402', description: 'Payment Required'}, 
+                          { choice: '403', description: 'Forbidden'}, 
+                          { choice: '404', description: 'Not Found'}, 
+                          { choice: '405', description: 'Method Not Allowed'}, 
+                          { choice: '406', description: 'Not Acceptable'}, 
+                          { choice: '407', description: 'Proxy Authentication Required'}, 
+                          { choice: '408', description: 'Request Timeout'}, 
+                          { choice: '409', description: 'Conflict'}, 
+                          { choice: '410', description: 'Gone'}, 
+                          { choice: '411', description: 'Length Required'}, 
+                          { choice: '412', description: 'Precondition Failed'}, 
+                          { choice: '413', description: 'Request Entity Too Large'}, 
+                          { choice: '414', description: 'Request-URI Too Long'}, 
+                          { choice: '415', description: 'Unsupported Media Type'}, 
+                          { choice: '416', description: 'Requested Range Not Satisfiable'}, 
+                          { choice: '417', description: 'Expectatiokn Failed'},
+                          { choice: '500', description: 'Internal Server Error'}, 
+                          { choice: '501', description: 'Not Implemented'}, 
+                          { choice: '502', description: 'Bad Gateway'}, 
+                          { choice: '503', description: 'Service Unavailable'}, 
+                          { choice: '504', description: 'Gateway Timeout'}, 
+                          { choice: '505', description: 'Http Version Not Supported'} 
+                         ]
             },
             selectedErrorCode: "",
             selectHttpCallType: {
@@ -38,7 +52,7 @@ export default Ember.Route.extend(httpErrorHandlerMixin, {
 
     actions: {
         setErrorCode: function(model) {
-            var self = this;
+            alert("Requesting " + model.selectedErrorCode + " HTTP response code using an HTTP " + model.selectedHttpCallType + " request.");
             //set active error code and push it to the HTTP mock server.
             //   POST http://localhost:4200/eam/v1/api/forceReturnCode?code=302
             var url = 'http://' + window.location.hostname + ':4200/api/errorCodes/forceErrorCode?code=' + model.selectedErrorCode;
@@ -57,9 +71,9 @@ export default Ember.Route.extend(httpErrorHandlerMixin, {
         exerciseErrorCode: function() {
             var self = this;
             var model = this.modelFor('index');
-            switch (model.selectedHttpCallType) {
+	    var url = 'http://' + window.location.hostname + ':4200/api/errorCodes/';
+	    switch (model.selectedHttpCallType) {
                 case "get":
-                    var url = 'http://' + window.location.hostname + ':4200/api/errorCodes/';
                     Ember.$.ajax({
                         url: url,
                         type: 'POST',
@@ -68,11 +82,11 @@ export default Ember.Route.extend(httpErrorHandlerMixin, {
                         headers: {
                             'Accept': 'application/json'
                         },
-                        success: function(data) {
+                        success: function( /* data */) {
                             //self.resolve(data);
                         },
-                        error: function(request, textStatus, error) {
-                            self.errorHandler(request);
+                        error: function(request /* , textStatus, error */) {
+                            self.httpErrorHandler.errorHandler.call(self, request);
                         }
                     });
                     break;

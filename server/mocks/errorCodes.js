@@ -2,10 +2,17 @@ module.exports = function(app) {
   var express = require('express');
   var router = express.Router();
 
+
+/*
+ * Futures would be to move all of the variables associated with response codes.
+ * Move them into a single object that contains a map of mocked codes.
+ */
+
   var force302Response = false,
       force401Response = false,
       force404Response = false,
-      force500Errors = false;
+      force500Errors = false,
+      force501Errors = false;
 
   var getResponse = function(res) {
     if (force302Response) {
@@ -20,7 +27,23 @@ module.exports = function(app) {
     } else if (force500Errors) {
       res.status(500);
       console.log('Sending 500.');
+    } else if (force501Errors) {
+      res.status(501);
+      console.log('Sending 501');
+    } else {
+      console.log('');	    
+      console.log('WARNING: The HTTP code you selected is not implemented in mock object.');
+      console.log('Please update ==> server/mock/errorCodes.js');
+      console.log('');
     }
+  }
+
+  var resetErrorCodes = function() {
+      force302Response = false;
+      force401Response = false;
+      force404Response = false;
+      force500Errors = false;
+      force501Errors = false;
   }
 
       /*
@@ -29,28 +52,28 @@ module.exports = function(app) {
       */
       router.post('/forceErrorCode', function(req, res) {
         var returnCode = req.query.code;
-        if (returnCode === '302') {
+        resetErrorCodes();
+	if (returnCode === '302') {
           force302Response = true;
-          force401Response = false;
-          force404Response = false;
-          force500Errors = false;
         } else if (returnCode === '401') {
-          force302Response = false;
           force401Response = true;
-          force404Response = false;
-          force500Errors = false;
         } else if (returnCode === '404') {
-          force302Response = false;
-          force401Response = false;
           force404Response = true;
-          force500Errors = false;
         } else if(returnCode === '500') {
-          force302Response = false;
-          force401Response = false;
-          force404Response = false;
           force500Errors = true;
-        }
-        res.send({'force302Response': force302Response, 'force401Response': force401Response, 'force404Response': force404Response, 'force500Errors': force500Errors});
+        } else if(returnCode === '501') {
+          force501Errors = true;		
+	} else {
+          console.log('');
+          console.log('WARNING: The HTTP code you selected is not implemented in mock object.');
+          console.log('Please update ==> server/mock/errorCodes.js');
+	  console.log('');
+	}
+
+        //res.send(JSON.stringify(mocked_codes));
+
+        res.send({'force302Response': force302Response, 'force401Response': force401Response, 'force404Response': force404Response, 'force500Errors': force500Errors, 'force501Errors': force501Errors });
+
       });
 
   router.get('/', function(req, res) {

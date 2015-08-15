@@ -1,5 +1,5 @@
-import Ember from 'ember';
-var fmt = Ember.String.fmt;
+//import Ember from 'ember';
+//var fmt = Ember.String.fmt;
 import DS from 'ember-data';
 
 export default DS.RESTAdapter.extend({
