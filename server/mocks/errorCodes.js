@@ -16,6 +16,7 @@ module.exports = function(app) {
 
   var getResponse = function(res) {
     codes.forEach(function(value, key) {
+      console.log("key = " + key + " value = : " + value);
       if (value) {
       	res.status(key);
 	console.log("Sending " + key);
@@ -38,9 +39,8 @@ module.exports = function(app) {
       */
       router.post('/forceErrorCode', function(req, res) {
 	resetErrorCodes();
-	codes.set(req.query.come, true);
+	codes.set(req.query.code, true);
         res.send(JSON.stringify(codes));
-	}
       });
 
   router.get('/', function(req, res) {
