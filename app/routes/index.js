@@ -23,7 +23,7 @@ export default Ember.Route.extend({
                           { choice: '414', description: 'Request-URI Too Long'}, 
                           { choice: '415', description: 'Unsupported Media Type'}, 
                           { choice: '416', description: 'Requested Range Not Satisfiable'}, 
-                          { choice: '417', description: 'Expectatiokn Failed'},
+                          { choice: '417', description: 'Expectation Failed'},
                           { choice: '500', description: 'Internal Server Error'}, 
                           { choice: '501', description: 'Not Implemented'}, 
                           { choice: '502', description: 'Bad Gateway'}, 
@@ -65,12 +65,12 @@ export default Ember.Route.extend({
                     'Accept': 'application/json'
                 }
             }).done(function() {}).fail(function( /*response*/ ) {
-                alert('Failed to set errorCode');
+                alert('Failed to set HTTP return code');
             });
         },
         exerciseErrorCode: function() {
             var self = this;
-            var model = this.modelFor('index');
+	    var model = this.modelFor('index');
 	    var url = 'http://' + window.location.hostname + ':4200/api/errorCodes/';
 	    switch (model.selectedHttpCallType) {
                 case "get":
@@ -83,9 +83,11 @@ export default Ember.Route.extend({
                             'Accept': 'application/json'
                         },
                         success: function( /* data */) {
-                            //self.resolve(data);
+                            Ember.debug("Success");
+			    //self.resolve(data);
                         },
                         error: function(request /* , textStatus, error */) {
+		            Ember.debug("Error");
                             self.httpErrorHandler.errorHandler.call(self, request);
                         }
                     });
