@@ -3,7 +3,7 @@
 
 ###The file app/initializer/http-error-handler.js does all of the work. 
 
-###Example usage:
+#####Example usage:
 
 ```javascript
                     Ember.$.ajax({
@@ -15,7 +15,7 @@
                             'Accept': 'application/json'
                         },
                         success: function(data) {
-			    self.resolve(data);
+                            self.resolve(data);
                         },
                         error: function(request /* , textStatus, error */) {
                             self.httpErrorHandler.errorHandler.call(self, request);
