@@ -76,6 +76,21 @@ export default Ember.Route.extend({
                 case "get":
                     Ember.$.ajax({
                         url: url,
+                        type: 'GET',
+			data: {},
+                        success: function( /* data */) {
+                            //Ember.debug("Success callback invoked");
+			    //self.resolve(data);
+                        },
+                        error: function(request /* , textStatus, error */) {
+		            //Ember.debug("Error callback invoked");
+                            self.httpErrorHandler.errorHandler.call(self, request);
+                        }
+                    });
+                    break;
+                case "post":
+                    Ember.$.ajax({
+                        url: url,
                         type: 'POST',
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
@@ -83,21 +98,44 @@ export default Ember.Route.extend({
                             'Accept': 'application/json'
                         },
                         success: function( /* data */) {
-                            Ember.debug("Success");
+                            //Ember.debug("Success callback invoked");
 			    //self.resolve(data);
                         },
                         error: function(request /* , textStatus, error */) {
-		            Ember.debug("Error");
+		            //Ember.debug("Error callback invoked");
                             self.httpErrorHandler.errorHandler.call(self, request);
                         }
                     });
                     break;
-                case "post":
-                    break;
-                case "put":
-                    break;
+		case "put":
+                    Ember.$.ajax({
+                        url: url,
+                        type: 'PUT',
+                        data: {},
+			success: function( /* data */) {
+                            //Ember.debug("Success callback invoked");
+			    //self.resolve(data);
+                        },
+                        error: function(request /* , textStatus, error */) {
+		            //Ember.debug("Error callback invoked");
+                            self.httpErrorHandler.errorHandler.call(self, request);
+                        }
+                    });
+		    break;
                 case "delete":
-                    break;
+                    Ember.$.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        success: function( /* data */) {
+                            //Ember.debug("Success callback invoked");
+			    //self.resolve(data);
+                        },
+                        error: function(request /* , textStatus, error */) {
+		            //Ember.debug("Error callback invoked");
+                            self.httpErrorHandler.errorHandler.call(self, request);
+                        }
+                    });
+		    break;
             }
         }
     }

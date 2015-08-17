@@ -48,8 +48,13 @@ export function initialize(container, application) {
             };
 
             if (error && typeof error.status !== 'undefined' && errors.has(error.status)) {
-                if (is(errors.get(error.status)) === 'String') {
-                    return this.transitionTo(errors.get(error.status));
+                if (is(errors.get(error.status)) === 'String') {	    
+                        try {
+			    return this.transitionTo(errors.get(error.status));
+			} catch(e) {
+			    Ember.debug(e.message);
+		            return this.transitionTo(errors.get(500));
+			}
                 } else if (is(errors.get(error.status)) === 'Function') {
                     return errors.get(error.status)();
                 }

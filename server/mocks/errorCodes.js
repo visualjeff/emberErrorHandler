@@ -16,7 +16,6 @@ module.exports = function(app) {
 
   var getResponse = function(res) {
     codes.forEach(function(value, key) {
-      console.log("key = " + key + " value = : " + value);
       if (value) {
       	res.status(key);
 	console.log("Sending " + key);
