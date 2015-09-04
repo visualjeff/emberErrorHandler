@@ -83,9 +83,10 @@ export default Ember.Route.extend({
 			    //self.resolve(data);
                         },
                         error: function(request /* , textStatus, error */) {
-		            //Ember.debug("Error callback invoked");
-                            self.httpErrorHandler.errorHandler.call(self, request);
-                        }
+		            if (request.status >= 400) {
+                                self.httpErrorHandler.errorHandler.call(self, request);
+			    }
+			}
                     });
                     break;
                 case "post":
@@ -102,8 +103,9 @@ export default Ember.Route.extend({
 			    //self.resolve(data);
                         },
                         error: function(request /* , textStatus, error */) {
-		            //Ember.debug("Error callback invoked");
-                            self.httpErrorHandler.errorHandler.call(self, request);
+		            if (request.status >= 400) {
+                                self.httpErrorHandler.errorHandler.call(self, request);
+			    }
                         }
                     });
                     break;
@@ -117,9 +119,10 @@ export default Ember.Route.extend({
 			    //self.resolve(data);
                         },
                         error: function(request /* , textStatus, error */) {
-		            //Ember.debug("Error callback invoked");
-                            self.httpErrorHandler.errorHandler.call(self, request);
-                        }
+		            if (request.status >= 400) {
+                                self.httpErrorHandler.errorHandler.call(self, request);
+			    }
+			}
                     });
 		    break;
                 case "delete":
@@ -131,9 +134,10 @@ export default Ember.Route.extend({
 			    //self.resolve(data);
                         },
                         error: function(request /* , textStatus, error */) {
-		            //Ember.debug("Error callback invoked");
-                            self.httpErrorHandler.errorHandler.call(self, request);
-                        }
+		            if (request.status >= 400) {
+                                self.httpErrorHandler.errorHandler.call(self, request);
+			    }
+			}
                     });
 		    break;
             }
