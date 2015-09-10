@@ -1,20 +1,25 @@
 import Ember from 'ember';
-import ENV from 'errproject/config/environment';
+import ENV from '../config/environment';
 
 /*
  * Ember httpErrorHandler is a dependecy injected service singleton.
  * Created by visualjeff
  *
+ * Have a default error page that takes a model of dataa.
+ * If a custom page is available then display it.  Overriding the default model.
+ * If no cusotm page exists then display the default error page with default model?
+ * The worst possible situation would be to display the error page with the system down message.
+ *
  * Call the error handler like this:
  *
- *   httErrorHandler.errorHandler.call(this, error);
+ *   httpErrorHandler.errorHandler.call(this, error);
  */
 export function initialize(container, application) {
     let httpErrorHandler = Ember.Object.extend({
-        errorHandler: function(error) {
+	      errorHandler: function(error) {
             //Map response codes or errors to your ember routes for error pages.
             //-----------------------------------------------------------------
-            let errors = Ember.Map.create()
+	          let errors = Ember.Map.create()
                 .set(400, 'badRequest')
                 .set(401, function() { //unauthorized
                     window.location.href = ENV.baseURL;
@@ -51,16 +56,17 @@ export function initialize(container, application) {
             if (error && typeof error.status !== 'undefined' && errors.has(error.status)) {
                 if (is(errors.get(error.status)) === 'String') {
                     try {
-                        return this.transitionTo(errors.get(error.status));
-                    } catch (e) {
-                        Ember.debug(e.message);
-                        return this.transitionTo(errors.get(500));
+                      return this.transitionTo(ENV.errorRoute, {responseCode: error.status, errorMessageKey: errors.get(error.status)});
+                    } catch(e) {
+                      Ember.debug(e.message);
+                      return this.transitionTo(ENV.errorRoute, {responseCode: 500, errorMessageKey: 'systemDown'});
                     }
                 } else if (is(errors.get(error.status)) === 'Function') {
+                    Ember.debug("UNAUTHORIZED - You are being routed back to / to login.  In theory...");
                     return errors.get(error.status)();
                 }
             } else if (error && typeof error.status !== 'undefined' && error && !errors.has(error.status)) {
-                return this.transitionTo(errors.get(500));
+                return this.transitionTo(ENV.errorRoute, {responseCode: 500, errorMessageKey: 'systemDown'});
             } else if (error && typeof error.status === 'undefined') {
                 Ember.debug('error object status property is undefined');
             }
@@ -73,7 +79,7 @@ export function initialize(container, application) {
     application.inject('route', 'httpErrorHandler', 'service:httpErrorHandler');
 }
 
-exporti default {
+export default {
     name: 'http-error-handler',
     initialize: initialize,
     before: '',

@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:page-not-found', 'Unit | Route | page not found', {
+moduleFor('route:error', 'Unit | Route | error', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

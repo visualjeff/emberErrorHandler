@@ -6,10 +6,8 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('systemDown');
-  this.route('accessDenied');
-  this.route('pageNotFound');
-  this.route('notImplemented');
+  //NOTE: error could be remove from the path if you don't like to see it.
+  this.route('error', { path: '/error/:responseCode/:errorMessageKey' });
 });
 
 export default Router;

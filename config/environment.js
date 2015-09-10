@@ -5,6 +5,7 @@ module.exports = function(environment) {
         modulePrefix: 'errproject',
         environment: environment,
         baseURL: '/',
+        errorRoute: 'error',
         locationType: 'auto',
         EmberENV: {
             FEATURES: {
