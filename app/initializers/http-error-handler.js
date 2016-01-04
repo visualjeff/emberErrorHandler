@@ -16,14 +16,14 @@ import ENV from '../config/environment';
  */
 export function initialize(container, application) {
     let httpErrorHandler = Ember.Object.extend({
-	      errorHandler: function(error) {
+	      errorHandler: (error) => {
             //Map response codes or errors to your ember routes for error pages.
             //-----------------------------------------------------------------
 	          let errors = Ember.Map.create()
                 .set(400, 'badRequest')
-                .set(401, function() { //unauthorized
-                    window.location.href = ENV.baseURL;
-                    return true;
+                .set(401, () => {
+                  window.location.href = ENV.baseURL;
+                  return true;
                 })
                 .set(402, 'paymentRequired')
                 .set(403, 'forbidden')
@@ -49,9 +49,7 @@ export function initialize(container, application) {
                 .set(505, 'notSupported');
             //-----------------------------------------------------------------
 
-            let is = function(obj) {
-                return Object.prototype.toString.call(obj).slice(8, -1);
-            };
+            let is = (obj) => Object.prototype.toString.call(obj).slice(8, -1);
 
             if (error && typeof error.status !== 'undefined' && errors.has(error.status)) {
                 if (is(errors.get(error.status)) === 'String') {
